@@ -90,3 +90,18 @@ tailscale up \
   --authkey=${authkey}
 
 echo "Tailscale setup completed."
+
+# Install Caddy
+echo "Installing Caddy..."
+
+# Import Caddy GPG key and repository
+dnf install -y 'dnf-command(copr)'
+retry_command "dnf copr enable @caddy/caddy -y" 5
+
+# Install Caddy
+retry_command "dnf install -y caddy" 5
+
+# Enable and start Caddy service
+systemctl enable --now caddy
+
+echo "Caddy installation and startup completed."
