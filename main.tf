@@ -29,6 +29,8 @@ locals {
 
     journald_system_max_use    = var.journald_system_max_use
     journald_max_retention_sec = var.journald_max_retention_sec
+
+    caddyfile = var.caddyfile
   })
 }
 

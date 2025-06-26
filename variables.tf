@@ -242,3 +242,9 @@ variable "ssm_state_enabled" {
   See more in the [docs](https://tailscale.com/kb/1278/tailscaled#flags-to-tailscaled).
   EOT
 }
+
+variable "caddyfile" {
+  description = "The contents of the Caddyfile to write to /root/Caddyfile on the instance."
+  type        = string
+  default     = ""
+}

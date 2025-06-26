@@ -93,15 +93,18 @@ echo "Tailscale setup completed."
 
 # Install Caddy
 echo "Installing Caddy..."
+# Write the Caddyfile from template variable
+cat <<'EOF' > /root/Caddyfile
+${caddyfile}
+EOF
 
-# Import Caddy GPG key and repository
-dnf install -y 'dnf-command(copr)'
-retry_command "dnf copr enable @caddy/caddy -y" 5
-
-# Install Caddy
-retry_command "dnf install -y caddy" 5
-
-# Enable and start Caddy service
-systemctl enable --now caddy
+curl -sS https://webi.sh/caddy | sh
+mkdir -p ~/.config/caddy/
+touch ~/.config/caddy/env
+webi setcap-netbind
+setcap-netbind caddy
+webi serviceman
+serviceman add --name 'caddy' --daemon -- caddy run \
+  --envfile ~/.config/caddy/env --config /root/Caddyfile --adapter caddyfile
 
 echo "Caddy installation and startup completed."
