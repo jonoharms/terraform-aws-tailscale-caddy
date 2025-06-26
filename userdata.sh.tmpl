@@ -107,4 +107,7 @@ webi serviceman
 serviceman add --name 'caddy' --daemon -- caddy run \
   --envfile ~/.config/caddy/env --config /root/Caddyfile --adapter caddyfile
 
+systemctl daemon-reload
+systemctl enable --now 'caddy'
+
 echo "Caddy installation and startup completed."
