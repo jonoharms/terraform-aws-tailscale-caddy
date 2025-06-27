@@ -62,6 +62,7 @@ module "tailscale_subnet_router" {
   max_size         = var.max_size
   min_size         = var.min_size
   desired_capacity = var.desired_capacity
+  volume_size      = var.volume_size
 
   monitoring_enabled          = var.monitoring_enabled
   associate_public_ip_address = var.associate_public_ip_address

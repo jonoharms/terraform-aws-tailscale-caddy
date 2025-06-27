@@ -132,6 +132,12 @@ variable "min_size" {
   default     = 1
 }
 
+variable "volume_size" {
+  description = "The size of the volume in gigabytes."
+  type        = number
+  default     = null
+}
+
 variable "desired_capacity" {
   description = "Desired number of instances in the Auto Scaling Group"
   type        = number
