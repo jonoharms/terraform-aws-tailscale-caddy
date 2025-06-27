@@ -56,13 +56,16 @@ retry_command() {
 
 # Install CloudWatch Agent
 echo "Installing CloudWatch Agent..."
-retry_command "dnf install -y amazon-cloudwatch-agent" 5
+retry_command "dnf install -y wget" 5
+retry_command "wget https://amazoncloudwatch-agent.s3.amazonaws.com/redhat/arm64/latest/amazon-cloudwatch-agent.rpm" 5
+retry_command "rpm -U ./amazon-cloudwatch-agent.rpm" 5
+# retry_command "dnf install -y amazon-cloudwatch-agent" 5
 amazon-cloudwatch-agent-ctl -a start -m ec2
 
 # Install Tailscale
 echo "Installing Tailscale..."
 retry_command "dnf install -y dnf-utils" 5
-retry_command "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2/tailscale.repo" 5
+retry_command "dnf config-manager --add-repo https://pkgs.tailscale.com/stable/rhel/9/tailscale.repo" 5
 retry_command "dnf install -y tailscale" 5
 
 %{ if tailscaled_extra_flags_enabled == true }
@@ -94,20 +97,15 @@ echo "Tailscale setup completed."
 # Install Caddy
 echo "Installing Caddy..."
 # Write the Caddyfile from template variable
-cat <<'EOF' > /root/Caddyfile
+cat <<'EOF' > /etc/caddy/Caddyfile
 ${caddyfile}
 EOF
 
-curl -sS https://webi.sh/caddy | sh
-mkdir -p ~/.config/caddy/
-touch ~/.config/caddy/env
-webi setcap-netbind
-setcap-netbind caddy
-webi serviceman
-serviceman add --name 'caddy' --daemon -- caddy run \
-  --envfile ~/.config/caddy/env --config /root/Caddyfile --adapter caddyfile
+retry_command "dnf install 'dnf-command(copr)'" 5
+retry_command "dnf copr -y enable @caddy/caddy" 5
+retry_command "dnf install -y caddy" 5
 
 systemctl daemon-reload
-systemctl enable --now 'caddy'
+systemctl enable --now caddy
 
 echo "Caddy installation and startup completed."
