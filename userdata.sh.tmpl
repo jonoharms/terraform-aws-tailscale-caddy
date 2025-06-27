@@ -94,32 +94,32 @@ tailscale up \
 
 echo "Tailscale setup completed."
 
-# Install Caddy
-echo "Installing Caddy..."
+# # Install Caddy
+# echo "Installing Caddy..."
 
 
-retry_command "dnf install 'dnf-command(copr)'" 5
-retry_command "dnf copr -y enable @caddy/caddy" 5
-retry_command "dnf install -y caddy" 5
+# retry_command "dnf install 'dnf-command(copr)'" 5
+# retry_command "dnf copr -y enable @caddy/caddy" 5
+# retry_command "dnf install -y caddy" 5
 
-cat <<'EOF' > /etc/caddy/Caddyfile
-${caddyfile}
-EOF
+# cat <<'EOF' > /etc/caddy/Caddyfile
+# ${caddyfile}
+# EOF
 
-systemctl daemon-reload
-systemctl enable --now caddy
+# systemctl daemon-reload
+# systemctl enable --now caddy
 
-echo "Caddy installation and startup completed."
+# echo "Caddy installation and startup completed."
 
-echo "Installing haproxy..."
+# echo "Installing haproxy..."
 
-retry_command "dnf install -y haproxy" 5
+# retry_command "dnf install -y haproxy" 5
 
-cat <<'EOF' > /etc/haproxy/haproxy.cfg
-${haproxy_config}
-EOF
+# cat <<'EOF' > /etc/haproxy/haproxy.cfg
+# ${haproxy_config}
+# EOF
 
-sudo systemctl enable --now haproxy
+# sudo systemctl enable --now haproxy
 
 echo "haproxy installation and startup completed."
 
