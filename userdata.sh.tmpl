@@ -96,14 +96,15 @@ echo "Tailscale setup completed."
 
 # Install Caddy
 echo "Installing Caddy..."
-# Write the Caddyfile from template variable
-cat <<'EOF' > /etc/caddy/Caddyfile
-${caddyfile}
-EOF
+
 
 retry_command "dnf install 'dnf-command(copr)'" 5
 retry_command "dnf copr -y enable @caddy/caddy" 5
 retry_command "dnf install -y caddy" 5
+
+cat <<'EOF' > /etc/caddy/Caddyfile
+${caddyfile}
+EOF
 
 systemctl daemon-reload
 systemctl enable --now caddy
