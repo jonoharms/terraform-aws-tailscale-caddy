@@ -110,3 +110,15 @@ systemctl daemon-reload
 systemctl enable --now caddy
 
 echo "Caddy installation and startup completed."
+
+echo "Installing haproxy..."
+
+retry_command "dnf install -y haproxy" 5
+
+cat <<'EOF' > /etc/haproxy/haproxy.cfg
+${haproxy_config}
+EOF
+
+sudo systemctl enable --now haproxy
+
+echo "haproxy installation and startup completed."

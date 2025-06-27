@@ -250,7 +250,13 @@ variable "ssm_state_enabled" {
 }
 
 variable "caddyfile" {
-  description = "The contents of the Caddyfile to write to /root/Caddyfile on the instance."
+  description = "The contents of the Caddyfile to write to /etc/caddy/Caddyfile on the instance."
+  type        = string
+  default     = ""
+}
+
+variable "haproxy_config" {
+  description = "The contents of the haproxy.cfg to write to /etc/haproxy/haproxy.cfg on the instance."
   type        = string
   default     = ""
 }
