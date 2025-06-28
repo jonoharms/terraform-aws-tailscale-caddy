@@ -30,8 +30,8 @@ locals {
     journald_system_max_use    = var.journald_system_max_use
     journald_max_retention_sec = var.journald_max_retention_sec
 
-    caddyfile      = var.caddyfile
-    haproxy_config = var.haproxy_config
+    nginx_config = var.nginx_config
+    nginx_ports  = var.nginx_ports
   })
 }
 

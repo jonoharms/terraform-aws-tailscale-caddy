@@ -95,6 +95,12 @@ tailscale up \
 echo "Tailscale setup completed."
 
 echo "Installing nginx..."
+
+# Allow custom ports for nginx using semanage, based on a dictionary variable
+%{ for port in nginx_ports ~}
+retry_command "semanage port -a -t http_port_t -p ${port.protocol} ${port.number}"
+%{ endfor }
+
 retry_command "dnf install -y nginx nginx-mod-stream" 5
 
 cat <<'EOF' > /etc/nginx/nginx.conf

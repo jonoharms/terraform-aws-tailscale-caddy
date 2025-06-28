@@ -249,14 +249,17 @@ variable "ssm_state_enabled" {
   EOT
 }
 
-variable "caddyfile" {
-  description = "The contents of the Caddyfile to write to /etc/caddy/Caddyfile on the instance."
+variable "nginx_config" {
+  description = "The contents of the nginx.conf to write to /etc/nginx/nginx.conf on the instance."
   type        = string
   default     = ""
 }
 
-variable "haproxy_config" {
-  description = "The contents of the haproxy.cfg to write to /etc/haproxy/haproxy.cfg on the instance."
-  type        = string
-  default     = ""
+variable "nginx_ports" {
+  description = "List of maps with protocol and port number for nginx semanage"
+  type = list(object({
+    protocol = string
+    number   = number
+  }))
+  default = []
 }
