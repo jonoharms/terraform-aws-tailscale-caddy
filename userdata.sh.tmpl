@@ -94,40 +94,16 @@ tailscale up \
 
 echo "Tailscale setup completed."
 
-# # Install Caddy
-# echo "Installing Caddy..."
+# Install NGINX with the stream module
+echo "Installing NGINX with stream module..."
 
+# Enable EPEL repository for extra packages
+retry_command "dnf install -y epel-release" 5
 
-# retry_command "dnf install 'dnf-command(copr)'" 5
-# retry_command "dnf copr -y enable @caddy/caddy" 5
-# retry_command "dnf install -y caddy" 5
+# Install NGINX (stream module is included by default in AlmaLinux/RHEL NGINX package)
+retry_command "dnf install -y nginx" 5
 
-# cat <<'EOF' > /etc/caddy/Caddyfile
-# ${caddyfile}
-# EOF
+# Enable and start NGINX
+systemctl enable --now nginx
 
-# systemctl daemon-reload
-# systemctl enable --now caddy
-
-# echo "Caddy installation and startup completed."
-
-# echo "Installing haproxy..."
-
-# retry_command "dnf install -y haproxy" 5
-
-# cat <<'EOF' > /etc/haproxy/haproxy.cfg
-# ${haproxy_config}
-# EOF
-
-# sudo systemctl enable --now haproxy
-
-echo "haproxy installation and startup completed."
-
-echo "Installing vscode-server..."
-
-retry_command "curl -Lk 'https://code.visualstudio.com/sha/download?build=stable&os=cli-alpine-arm64' --output vscode_cli.tar.gz" 5
-tar -xf vscode_cli.tar.gz -C /usr/bin
-rm vscode_cli.tar.gz
-
-echo "code cli installation completed."
-
+echo "NGINX installation (with stream) complete"
