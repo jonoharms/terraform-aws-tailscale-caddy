@@ -93,3 +93,14 @@ tailscale up \
   --authkey=${authkey}
 
 echo "Tailscale setup completed."
+
+echo "Installing nginx..."
+retry_command "dnf install -y nginx nginx-mod-stream" 5
+
+cat <<'EOF' > /etc/nginx/nginx.conf
+${nginx_config}
+EOF
+
+systemctl enable --now nginx
+
+echo "nginx setup complete."
