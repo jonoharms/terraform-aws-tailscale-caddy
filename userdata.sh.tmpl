@@ -93,17 +93,3 @@ tailscale up \
   --authkey=${authkey}
 
 echo "Tailscale setup completed."
-
-# Install NGINX with the stream module
-echo "Installing NGINX with stream module..."
-
-# Enable EPEL repository for extra packages
-retry_command "dnf install -y epel-release" 5
-
-# Install NGINX (stream module is included by default in AlmaLinux/RHEL NGINX package)
-retry_command "dnf install -y nginx" 5
-
-# Enable and start NGINX
-systemctl enable --now nginx
-
-echo "NGINX installation (with stream) complete"
